@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"grpc-studies/greet/greetpb"
 	"log"
 
@@ -17,6 +18,15 @@ func main() {
 	defer conn.Close()
 
 	cli := greetpb.NewGreetServiceClient(conn)
-	log.Printf("Created client: %v", cli)
+
+	req := &greetpb.Greeting{FirstName: "Igor", LastName: "Reis"}
+
+	for i := 0; i < 100000; i++ {
+		ret, err := cli.Greet(context.Background(), &greetpb.GreetRequest{Greeting: req})
+		if err != nil {
+			log.Fatalf("Failed to greet: %v", err)
+		}
+		log.Println(ret.Result)
+	}
 
 }

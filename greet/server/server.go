@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"grpc-studies/greet/greetpb"
 	"log"
 	"net"
@@ -13,6 +14,7 @@ type server struct {
 }
 
 func (s *server) Greet(ctx context.Context, req *greetpb.GreetRequest) (*greetpb.GreetResponse, error) {
+	fmt.Printf("Greet function was called with name %v %v", req.Greeting.FirstName, req.Greeting.LastName)
 	firstName := req.GetGreeting().GetFirstName()
 	lastName := req.GetGreeting().GetLastName()
 	return &greetpb.GreetResponse{
